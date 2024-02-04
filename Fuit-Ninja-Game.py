@@ -1,7 +1,7 @@
 import pygame, sys
 import os
 import random
-
+#testing
 #initializing useful variables
 player_lives = 3
 score = 0
