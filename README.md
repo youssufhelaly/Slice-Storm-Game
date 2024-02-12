@@ -29,11 +29,6 @@ Slice Storm is a simple yet addictive fruit-slicing game developed in Python usi
 2. Run the `main.py` file using Python: `python main.py`.
 3. Enjoy playing Slice Storm!
 
-### Credits:
-- Developed by [Your Name]
-
-### License:
-This project is licensed under the [MIT License](LICENSE).
 
 ---
 
