@@ -4,7 +4,6 @@ Slice Storm is a simple yet addictive fruit-slicing game developed in Python usi
 
 ### Features:
 - **Main Menu**: The game features a main menu where players can choose to start the game, access options, or quit the game.
-- **Options Menu**: Players can access an options menu to configure game settings.
 - **Gameplay**: Players use the mouse to slice fruits as they appear on the screen. Slicing a fruit earns points, while slicing a bomb results in the loss of a life.
 - **Pause Functionality**: Players can pause the game at any time to access the pause menu.
 - **Game Over Screen**: When players run out of lives, a game over screen displays their final score and offers options to restart or return to the main menu.
