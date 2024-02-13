@@ -4,19 +4,40 @@ Slice Storm is a simple yet addictive fruit-slicing game developed in Python usi
 
 ### Features:
 - **Main Menu**: The game features a main menu where players can choose to start the game, access options, or quit the game.
-- **Gameplay**: Players use the mouse to slice fruits as they appear on the screen. Slicing a fruit earns points, while slicing a bomb results in the loss of a life.
+- **Gameplay**: Players use the mouse to slice fruits as they appear on the screen. Slicing a fruit earns points, while slicing a bomb results in the end of the game.
+- **Dynamic Difficulty Levels**: Choose from multiple difficulty levels - Easy, Normal, and Hard - each with its own unique challenges.
 - **Pause Functionality**: Players can pause the game at any time to access the pause menu.
 - **Game Over Screen**: When players run out of lives, a game over screen displays their final score and offers options to restart or return to the main menu.
 
 ### How to Play:
-- Use the mouse to slice fruits as they move across the screen.
-- Avoid slicing bombs, as slicing one will result in the loss of a life.
+- Customize your gaming experience by adjusting difficulty levels
+- Use the mouse left click to slice fruits as they move across the screen.
+- Avoid slicing bombs, as slicing one will result in the end of the game.
 - Earn points for each fruit sliced.
 - Try to achieve the highest score possible before running out of lives.
 
 ### Technologies Used:
 - Python
 - Pygame Library
+
+### Screenshots:
+**Main Menu**:
+
+main_menu.png
+**Options Menu**:
+https://raw.github.com/youssufhelaly/SLice-Storm-Game/main/C:\Users\Youssuf Helaly\OneDrive\Desktop\Programmation\Github\Projects\Fruit-Ninja-game\Fruit-Ninja-Game\Screenshots
+
+
+options_menu.png
+Gameplay:
+
+gameplay.png
+Pause Menu:
+
+pause_menu.png
+Game Over:
+
+game_over.png
 
 ### Installation:
 1. Make sure you have Python installed on your system.
