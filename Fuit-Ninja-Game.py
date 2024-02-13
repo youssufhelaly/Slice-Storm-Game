@@ -57,7 +57,7 @@ BG = pygame.transform.scale(BG, (WIDTH, HEIGHT))
 
 
 def get_font(size): # Returns Press-Start-2P in the desired size
-    return pygame.font.Font("Fonts/Ninja_font.otf", size)
+    return pygame.font.Font("Fonts/Ninja.otf", size)
 
 # Function to handle the fade-in effect
 def fade_in(background):
@@ -68,22 +68,47 @@ def fade_in(background):
         SCREEN.blit(fade_surface, (0, 0))  # Draw fade surface
         pygame.display.flip()
         pygame.time.delay(15)  # Adjust delay for smoothness
-   
+
+current_difficulty_index = 1  
 def options():
+    global FPS,current_difficulty_index
+    difficulty_levels = ["Easy", "Normal", "Hard"]
     while True:
+
         OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
 
-        SCREEN.fill("black")
+        SCREEN.blit(BG, (0, 0))
 
-        OPTIONS_TEXT = get_font(45).render("This is the OPTIONS screen.", True, "Black")
-        OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=(500, 300))
+        OPTIONS_TEXT = get_font(100).render("OPTIONS", True, "#b68f40")
+        OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=(550, 100))
         SCREEN.blit(OPTIONS_TEXT, OPTIONS_RECT)
 
-        OPTIONS_BACK = Button(image=None, pos=(500, 300), 
-                            text_input="BACK", font=get_font(75), base_color="Black", hovering_color="Green")
 
-        OPTIONS_BACK.changeColor(OPTIONS_MOUSE_POS)
+        DIFFICULTY_TEXT = get_font(60).render( "Difficulty", True, ("black"))
+        DIFFICULTY_RECT = DIFFICULTY_TEXT.get_rect(center=(395, 300))
+        SCREEN.blit(DIFFICULTY_TEXT, DIFFICULTY_RECT)
+
+        OPTIONS_BACK = Button(image=None, pos=(525, 400), 
+                            text_input="BACK", font=get_font(75), base_color="black", hovering_color="#b68f40")
+
+        OPTIONS_LEFT_ARROW = Button(image=None, pos=(555, 300), 
+                            text_input="<", font=get_font(60), base_color="black", hovering_color="#b68f40")
+
+        OPTIONS_RIGHT_ARROW = Button(image=None, pos=(810, 300), 
+                            text_input=">", font=get_font(60), base_color="black", hovering_color="#b68f40")
+
+        OPTIONS_DIFFICULTY = Button(image=None, pos=(685, 300), 
+                            text_input=difficulty_levels[current_difficulty_index], font=get_font(65), base_color="black", hovering_color="black")
+
+        OPTIONS_BACK.changeColor(OPTIONS_MOUSE_POS, transparency=False)
+        OPTIONS_LEFT_ARROW.changeColor(OPTIONS_MOUSE_POS, transparency=False)
+        OPTIONS_RIGHT_ARROW.changeColor(OPTIONS_MOUSE_POS, transparency=False)
+        OPTIONS_DIFFICULTY.changeColor(OPTIONS_MOUSE_POS, transparency=False)
+
         OPTIONS_BACK.update(SCREEN)
+        OPTIONS_LEFT_ARROW.update(SCREEN)
+        OPTIONS_RIGHT_ARROW.update(SCREEN)
+        OPTIONS_DIFFICULTY.update(SCREEN)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -92,8 +117,23 @@ def options():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if OPTIONS_BACK.checkForInput(OPTIONS_MOUSE_POS):
                     main_menu()
+                elif OPTIONS_LEFT_ARROW.checkForInput(OPTIONS_MOUSE_POS):
+                    current_difficulty_index = (current_difficulty_index - 1) % len(difficulty_levels)
+                    FPS = get_difficulty_fps(current_difficulty_index)
+                elif OPTIONS_RIGHT_ARROW.checkForInput(OPTIONS_MOUSE_POS):
+                    current_difficulty_index = (current_difficulty_index + 1) % len(difficulty_levels)
+                    FPS = get_difficulty_fps(current_difficulty_index)
 
         pygame.display.update()
+
+def get_difficulty_fps(index):
+    difficulty_fps = {
+        0: 10,  # Easy
+        1: 15,  # Normal
+        2: 20   # Hard
+    }
+    return difficulty_fps.get(index, 15)  # Default to Normal difficulty if index is out of range
+
 
 # Define functions for menu and gameplay
 def main_menu():
@@ -126,7 +166,7 @@ def main_menu():
             # Handle mouse click events for buttons
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
-                    play_game(SCREEN)              
+                    play_game(SCREEN,current_difficulty_index)              
                 if OPTIONS_BUTTON.checkForInput(MENU_MOUSE_POS):
                     options()
                 if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
@@ -136,14 +176,13 @@ def main_menu():
         pygame.display.update()
 
 #The main part of the game 
-def play_game(SCREEN): 
+def play_game(SCREEN,current_game_difficulty): 
 
     #initializing useful variables
     global player_lives,game_over,score
     player_lives=3
     score = 0
-    fruits = ["pear", "orange", "apple", "strawberry","passionfruit", "lemon", "guava", "kiwi", "peach", "bomb"]
-    FPS = 15  
+    fruits = ["pear", "orange", "apple", "strawberry","passionfruit", "lemon", "guava", "kiwi", "peach", "bomb"]  
     background = pygame.image.load("images/Wood_backgroud.jpg")
     background = pygame.transform.scale(background, (WIDTH, HEIGHT)) 
 
@@ -222,7 +261,7 @@ def play_game(SCREEN):
             if fruit_data["speed_y"] < 0 and fruit_data["hit"]==True :
                 fruit_data["y"] -= fruit_data["speed_y"]
                 fruit_data["speed_y"] -= 1.50 
-            elif fruit_data["speed_y"] > 0 and fruit_data["hit"]==True :
+            elif fruit_data["speed_y"] >= 0 and fruit_data["hit"]==True :
                 fruit_data["y"] += fruit_data["speed_y"]
                 fruit_data["speed_y"] += 1.50 
             elif fruit_data["speed_y"] < 800 and fruit_data["hit"]!=True :  # If the fruit is moving up
@@ -428,14 +467,18 @@ def play_game(SCREEN):
                 game_running = False
                 game_over = True
 
+        global current_difficulty_index
+        FPS = get_difficulty_fps(current_difficulty_index)
+
         NEW_FRUIT_PROBABILITY = 1 
         if score >= SCORE_THRESHOLD:
-            FPS+=0.30
-            NEW_FRUIT_PROBABILITY+=0.35
+            FPS+=0.25
+            NEW_FRUIT_PROBABILITY+=0.30
             SCORE_THRESHOLD += 5  # Increase the score threshold for the next difficulty level
             if score % 25 == 0:
                 fruits.append("bomb")
-        if random.randint(0,75) < NEW_FRUIT_PROBABILITY :
+
+        if random.randint(0,70) < NEW_FRUIT_PROBABILITY :
         # Generate a new random fruit
             generate_random_fruits(fruits)
 
