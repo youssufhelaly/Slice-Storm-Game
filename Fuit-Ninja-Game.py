@@ -122,7 +122,7 @@ def options():
         
         # Display "OPTIONS" text
         OPTIONS_TEXT = get_font(100).render("OPTIONS", True, "#b68f40")
-        OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=(550, 100))
+        OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=(530, 100))
         SCREEN.blit(OPTIONS_TEXT, OPTIONS_RECT)
 
         # Display "Difficulty" text
@@ -624,6 +624,9 @@ def play_game(SCREEN):
             SCREEN.blit(Fruits_logo, (20, 0))
             SCREEN.blit(score_text, (100, 19))
             draw_lives(SCREEN, 800, 0, player_lives, Heart_Icon)
+
+            #Make sure the fruits are still there
+            render_game_state(SCREEN, data)
 
             # Create semi-transparent overlay surface
             overlay = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
