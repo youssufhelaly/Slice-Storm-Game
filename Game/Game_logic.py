@@ -8,6 +8,7 @@ import main_menu
 from main_menu import get_difficulty_fps, get_font, fade_in, main_menu
 
 
+
 # Define constants for screen width and height
 WIDTH = 1000
 HEIGHT = 600

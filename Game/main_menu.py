@@ -121,7 +121,6 @@ def options(play_game_func):
                     current_difficulty_index = (current_difficulty_index + 1) % len(difficulty_levels)
                     FPS = get_difficulty_fps(current_difficulty_index)
         pygame.display.update()
-        print(current_difficulty_index)
 def main_menu(play_game_func):
     """
     Display the main menu and handle user interactions.
