@@ -95,10 +95,9 @@ def options(play_game_func):
                                 text_input=difficulty_levels[current_difficulty_index], font=get_font(65), base_color="black", hovering_color="black")
 
         # Update button appearance and check for mouse input
-        OPTIONS_BACK.changeColor(OPTIONS_MOUSE_POS, transparency=False)
-        OPTIONS_LEFT_ARROW.changeColor(OPTIONS_MOUSE_POS, transparency=False)
-        OPTIONS_RIGHT_ARROW.changeColor(OPTIONS_MOUSE_POS, transparency=False)
-        OPTIONS_DIFFICULTY.changeColor(OPTIONS_MOUSE_POS, transparency=False)
+        for button in [OPTIONS_BACK, OPTIONS_LEFT_ARROW, OPTIONS_RIGHT_ARROW, OPTIONS_DIFFICULTY]:
+            button.changeColor(OPTIONS_MOUSE_POS, transparency=False)
+            button.update(SCREEN)
 
         # Update buttons on the screen
         OPTIONS_BACK.update(SCREEN)
@@ -121,6 +120,7 @@ def options(play_game_func):
                     current_difficulty_index = (current_difficulty_index + 1) % len(difficulty_levels)
                     FPS = get_difficulty_fps(current_difficulty_index)
         pygame.display.update()
+
 def main_menu(play_game_func):
     """
     Display the main menu and handle user interactions.

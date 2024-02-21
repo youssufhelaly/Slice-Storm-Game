@@ -30,15 +30,14 @@ def play_game(SCREEN):
     - None
     """
     #initializing useful variables
-    global player_lives,game_over,score
+    global player_lives, game_over, score
     player_lives=3
     score = 0
-    fruits = ["pear", "orange", "apple", "strawberry","passionfruit", "lemon", "guava", "kiwi", "peach", "bomb"]  
+    fruits = ["pear", "orange", "apple", "strawberry", "passionfruit", "lemon", "guava", "kiwi", "peach", "bomb"]  
     background = pygame.image.load("images/Wood_backgroud.jpg")
     background = pygame.transform.scale(background, (WIDTH, HEIGHT)) 
 
     #Smoothing the transition between the main menu and the game
-
     fade_in(background) 
 
     # Name of the game
@@ -166,6 +165,7 @@ def play_game(SCREEN):
             fruit_data["x"] += fruit_data["speed_x"]
 
             # Handle vertical movement
+
             # When hit and going up this statement ensures that the fruit immediately starts going down to avoid chaos  
             if fruit_data["speed_y"] < 0 and fruit_data["hit"] == True:
                 fruit_data["y"] -= fruit_data["speed_y"]
@@ -177,7 +177,7 @@ def play_game(SCREEN):
                 fruit_data["speed_y"] += 1.50 
             
             #When ghoing up add a small value to continue to go up until the treshhold or the speed changes signs
-            elif fruit_data["speed_y"] < 800 and fruit_data["hit"] != True:
+            elif fruit_data["y"] < HEIGHT and fruit_data["hit"] != True:
                 fruit_data["y"] += fruit_data["speed_y"]
                 fruit_data["speed_y"] += 1.5  # Add a small positive value to reverse direction
 
@@ -260,10 +260,6 @@ def play_game(SCREEN):
         Parameters:
         - screen (Surface): The screen surface to render on.
         - data (dict): Dictionary containing information about each fruit.
-        - width (int): Width of the game window.
-        - score (int): Player's current score.
-        - height (int): Height of the game window.
-        - lives (int): Number of lives remaining.
 
         Returns:
         - None
