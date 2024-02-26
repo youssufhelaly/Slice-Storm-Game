@@ -5,7 +5,7 @@ import random
 import pygame.math
 from Button_class import Button
 import main_menu
-from main_menu import get_difficulty_fps, get_font, fade_in, main_menu
+from main_menu import get_font, fade_in, main_menu
 
 
 
@@ -16,6 +16,10 @@ HEIGHT = 600
 # Define the main game screen
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 
+ #For when generation fruits
+counter = 0
+#Fruit Probality
+FRUIT_PROBABILITY = 1 
 
 #The main part of the game 
 def play_game(SCREEN): 
@@ -134,13 +138,23 @@ def play_game(SCREEN):
                 fruit += char
         img = load_image("images/" + fruit + ".png")
         img = scale_image(img, (130, 130))
+
+        from main_menu import current_difficulty_index 
+        #get difficulty speed
+        if current_difficulty_index == 2:
+            y_speed = random.randint(-23, -20)
+        elif current_difficulty_index == 1:
+            y_speed = random.randint(-15, -13)
+        else:
+            y_speed = random.randint(-10, -8)
+
         #Different details about the fruit
         fruit_data = {
             "image": img,
-            "x": random.randint(150, WIDTH - 150),
-            "y": HEIGHT - 75,
-            "speed_x": random.randint(-15, 15),
-            "speed_y": random.randint(-40, -20),
+            "x": random.randint(175, WIDTH - 175),
+            "y": HEIGHT - 50,
+            "speed_x": random.randint(-4, 4),
+            "speed_y": y_speed,
             "hit": False,
         }
         data[fruit_name] = fruit_data
@@ -156,44 +170,51 @@ def play_game(SCREEN):
         Returns:
         - None
         """
-        global player_lives, game_over
+        global player_lives, game_over,counter
         fruits_to_remove = []  # Create a list to store fruits to remove
-        
+
+        from main_menu import current_difficulty_index 
+        #get difficulty incrementation 
+        if current_difficulty_index == 2:
+            incrementation = 0.6
+        elif current_difficulty_index == 1:
+            incrementation = 0.3
+        else:
+            incrementation = 0.1
         for fruit in list(data.keys()):
             # Handle horizontal movement
             fruit_data = data[fruit]
             fruit_data["x"] += fruit_data["speed_x"]
 
             # Handle vertical movement
-
             # When hit and going up this statement ensures that the fruit immediately starts going down to avoid chaos  
             if fruit_data["speed_y"] < 0 and fruit_data["hit"] == True:
                 fruit_data["y"] -= fruit_data["speed_y"]
-                fruit_data["speed_y"] -= 1.50 
+                fruit_data["speed_y"] -= incrementation 
 
             # When hit and going down this elif statement ensures the fruit continues going down   
             elif fruit_data["speed_y"] >= 0 and fruit_data["hit"] == True:
                 fruit_data["y"] += fruit_data["speed_y"]
-                fruit_data["speed_y"] += 1.50 
+                fruit_data["speed_y"] += incrementation 
             
             #When ghoing up add a small value to continue to go up until the treshhold or the speed changes signs
             elif fruit_data["y"] < HEIGHT and fruit_data["hit"] != True:
                 fruit_data["y"] += fruit_data["speed_y"]
-                fruit_data["speed_y"] += 1.5  # Add a small positive value to reverse direction
+                fruit_data["speed_y"] += incrementation # Add a small positive value to reverse direction
 
             # Because fruit is not only the name of the fruit but also the random number in front of it
             fruit_name = "".join(char for char in fruit if char.isalpha())
-
             # Check if fruit has gone off the screen
-            if (fruit_data["y"] > height + 50 or WIDTH + 85 < fruit_data["x"] or -85 > fruit_data["x"]) and fruit_name != "bomb":
+            if (fruit_data["y"] > height or WIDTH + 40  < fruit_data["x"] or -70 > fruit_data["x"]) and fruit_name != "bomb":
                 if fruit_data["hit"] != True:
                     player_lives -= 1
                     hide_lives(800, 0)
-
                 if player_lives <= 0:
                     game_over = True  # Set game over flag if no lives left
-                    return  
-                generate_random_fruits(fruits)
+                    return 
+                counter+=1
+                if  counter % 3 == 0:
+                    generate_random_fruits(fruits)
 
                 fruits_to_remove.append(fruit)
 
@@ -367,7 +388,8 @@ def play_game(SCREEN):
     is_paused = False   
     game_over = False        
     game_running = True
-    mouse_held = False   
+    mouse_held = False
+  
 
     while game_running and not game_over:
 
@@ -439,20 +461,17 @@ def play_game(SCREEN):
                 game_over = True
 
 
-        from main_menu import current_difficulty_index # Get current difficulty from other file
-        FPS = get_difficulty_fps(current_difficulty_index)# Get FPS specific to difficulty
-        NEW_FRUIT_PROBABILITY = 1 
-
+        FPS = 60 
+        global FRUIT_PROBABILITY
         # Increase difficulty based on score
         if score >= SCORE_THRESHOLD:
-            FPS += 0.20
-            NEW_FRUIT_PROBABILITY += 0.5
+            FRUIT_PROBABILITY += 0.30
             SCORE_THRESHOLD += 5  # Increase the score threshold for the next difficulty level
             if score % 25 == 0:
                 fruits.append("bomb")
 
         # Generate new fruits randomly
-        if random.randint(0, 70) < NEW_FRUIT_PROBABILITY:
+        if random.randint(0, 80) < FRUIT_PROBABILITY:
             generate_random_fruits(fruits)
 
 
@@ -463,6 +482,7 @@ def play_game(SCREEN):
         render_game_state(SCREEN, data)
 
         if game_over:
+            FRUIT_PROBABILITY = 1 # reset Fruit probability
             game_over_screen(score)
         pygame.display.flip()
         clock.tick(FPS)

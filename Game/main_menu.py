@@ -14,23 +14,6 @@ pygame.init()
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Menu")
 
-def get_difficulty_fps(index):
-    """
-    Get the frames per second (FPS) based on the difficulty index.
-    Args:
-    - index: Integer representing the difficulty level index
-    Returns:
-    - Integer representing the FPS for the corresponding difficulty level
-    """
-    # Dictionary mapping difficulty index to FPS
-    difficulty_fps = {
-        0: 10,  # Easy
-        1: 15,  # Normal
-        2: 20   # Hard
-    }
-    # Default to Normal difficulty if index is out of range
-    return difficulty_fps.get(index, 15)
-
 # Main menu
 # Load and scale the background image
 BG = pygame.image.load("images/menu_background.jpg")
@@ -115,10 +98,8 @@ def options(play_game_func):
                     main_menu(play_game_func)
                 elif OPTIONS_LEFT_ARROW.checkForInput(OPTIONS_MOUSE_POS):
                     current_difficulty_index = (current_difficulty_index - 1) % len(difficulty_levels)
-                    FPS = get_difficulty_fps(current_difficulty_index)
                 elif OPTIONS_RIGHT_ARROW.checkForInput(OPTIONS_MOUSE_POS):
                     current_difficulty_index = (current_difficulty_index + 1) % len(difficulty_levels)
-                    FPS = get_difficulty_fps(current_difficulty_index)
         pygame.display.update()
 
 def main_menu(play_game_func):
