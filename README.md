@@ -22,7 +22,7 @@ Slice Storm is a simple yet addictive fruit-slicing game developed in Python usi
 
 ### Video:
 
-https://github.com/youssufhelaly/Slice-Storm-Game/assets/145512571/e20b18f9-188e-4268-a84d-b4d0aa719a89
+[https://github.com/youssufhelaly/Slice-Storm-Game/assets/145512571/e20b18f9-188e-4268-a84d-b4d0aa719a89](https://github.com/youssufhelaly/Slice-Storm-Game/assets/145512571/5f90c347-3c9c-4d04-b20a-e28aff14a6f8)
 
 
 ### Screenshots:
